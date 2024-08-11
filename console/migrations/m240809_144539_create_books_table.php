@@ -19,18 +19,7 @@ class m240809_144539_create_books_table extends Migration
             'release_year' => $this->smallInteger()->unsigned()->notNull(),
             'isbn' => $this->string(17)->notNull(),
             'photo' => $this->string(255)->null(),
-            'author_id' => $this->bigInteger()->unsigned()->notNull(),
         ]);
-
-        $this->addForeignKey(
-            'fk_books_author_id',
-            '{{%books}}',
-            'author_id',
-            '{{%authors}}',
-            'id',
-            'restrict',
-            'cascade'
-        );
 
         $this->createIndex(
             'idx_books_isbn',
