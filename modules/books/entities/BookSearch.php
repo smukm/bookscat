@@ -7,13 +7,13 @@ use yii\data\ActiveDataProvider;
 
 class BookSearch extends Book
 {
-    public string $author_name = '';
+    public string $authors = '';
 
     public function rules(): array
     {
         return [
-            [['id', 'release_year', 'author_id'], 'integer'],
-            [['title', 'description', 'isbn', 'photo', 'author_name'], 'safe'],
+            [['id', 'release_year'], 'integer'],
+            [['title', 'description', 'isbn', 'photo', 'authors'], 'safe'],
         ];
     }
 
@@ -25,7 +25,7 @@ class BookSearch extends Book
 
     public function search($params): ActiveDataProvider
     {
-        $query = Book::find()->with('author');
+        $query = Book::find();
 
         // add conditions that should always apply here
 
@@ -45,7 +45,6 @@ class BookSearch extends Book
         $query->andFilterWhere([
             'id' => $this->id,
             'release_year' => $this->release_year,
-            'author_id' => $this->author_id,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
@@ -53,15 +52,14 @@ class BookSearch extends Book
             ->andFilterWhere(['like', 'isbn', $this->isbn])
             ->andFilterWhere(['like', 'photo', $this->photo]);
 
-        if(!empty($this->author_name)) {
+        if(!empty($this->authors)) {
             $authors = Author::find()
                 ->select(['id'])
-                ->where(['like', 'lastname', $this->author_name])
+                ->where(['like', 'lastname', $this->authors])
                 ->column();
 
-            if($authors) {
-                $query->andWhere(['in', 'author_id', $authors]);
-            }
+            $query->joinWith('authors');
+            $query->where(['in', 'authors.id', $authors]);
         }
 
         return $dataProvider;

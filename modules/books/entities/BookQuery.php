@@ -5,7 +5,7 @@ namespace modules\books\entities;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
-class BookQuery extends \yii\db\ActiveQuery
+class BookQuery extends ActiveQuery
 {
     public function all($db = null): array
     {
@@ -19,11 +19,15 @@ class BookQuery extends \yii\db\ActiveQuery
 
     public function top10(int $year): ActiveQuery
     {
-        return $this->select(['author_id', 'COUNT(*) as cnt'])
-            ->with('author')
-            ->groupBy('author_id')
+        return $this->select([
+            'authors.id',
+            "CONCAT_WS(' ', authors.firstname, authors.middlename, authors.lastname) as fullname",
+            'COUNT(books.id) as cnt'
+        ])
+            ->joinWith('authors')
+            ->groupBy('authors.id')
             ->orderBy(['cnt' => SORT_DESC])
-            ->where(['release_year' => $year])
+            ->where(['books.release_year' => $year])
             ->limit(10);
     }
 }

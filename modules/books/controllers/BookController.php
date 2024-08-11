@@ -5,7 +5,6 @@ namespace modules\books\controllers;
 use modules\books\entities\BookSearch;
 use modules\books\forms\BookForm;
 use modules\books\forms\SubscribeForm;
-use modules\books\services\AuthorsService;
 use modules\books\services\BooksService;
 use modules\books\services\SubscribeService;
 use Throwable;
@@ -109,6 +108,7 @@ class BookController extends Controller
     {
         $bookForm = new BookForm();
         $bookForm->isNewRecord = true;
+
         try {
             if($bookForm->load($this->request->post()) && $bookForm->validate()) {
 
@@ -140,6 +140,8 @@ class BookController extends Controller
         $bookForm = new BookForm();
         $bookForm->setAttributes($book->attributes);
 
+        $bookForm->authors = $book->getAuthorsIds();
+
         return $this->render('update', [
             'book' => $book,
             'bookForm' => $bookForm,
@@ -157,7 +159,7 @@ class BookController extends Controller
             if($bookForm->load($this->request->post()) && $bookForm->validate()) {
 
                 if (!$bookForm->upload()) {
-                    Yii::$app->session->addFlash('error', 'Can`t upload a photo');
+                    Yii::$app->session->addFlash('error', Yii::t('books','Can`t upload a photo'));
                 }
 
                 $book = $this->booksService->editBook($bookForm, $id);
@@ -194,8 +196,9 @@ class BookController extends Controller
     {
         $subscribeForm = new SubscribeForm();
         $book = $this->booksService->findBook($id);
-        $subscribeForm->author_id = $book->author_id;
-        $subscribeForm->author_name = $book->author->fullName;
+
+        $subscribeForm->author_ids = implode(';', $book->getAuthorsIds());
+        $subscribeForm->setAuthorsNames();
 
         return $this->renderAjax('_subscribe', [
             'subscribeForm' => $subscribeForm,
@@ -206,13 +209,11 @@ class BookController extends Controller
     {
         $subscribeForm = new SubscribeForm();
         $subscribeService = new SubscribeService();
-        $authorService = new AuthorsService();
 
         try {
             if($subscribeForm->load(Yii::$app->request->post())) {
 
-                $author = $authorService->findAuthor($subscribeForm->author_id);
-                $subscribeForm->author_name = $author->fullName;
+                $subscribeForm->setAuthorsNames();
 
                 if(!$subscribeForm->validate()) {
                     return $this->renderAjax('_subscribe', [
@@ -224,13 +225,13 @@ class BookController extends Controller
                     $subscribeService->subscribe($subscribeForm);
                     Yii::$app->session->setFlash(
                         'success',
-                        'Номер ' . $subscribeForm->phone . ' подписан на sms-оповещения при поступлении новых книг автора: ' . $subscribeForm->author_name
+                        'Номер ' . $subscribeForm->phone . ' подписан на sms-оповещения при поступлении новых книг автора: ' . $subscribeForm->authors_names
                     );
                 } else {
                     $subscribeService->unsubscribe($subscribeForm);
                     Yii::$app->session->setFlash(
                         'success',
-                        'Номер ' . $subscribeForm->phone . ' отписан от sms-оповещений при поступлении новых книг автора: ' . $subscribeForm->author_name
+                        'Номер ' . $subscribeForm->phone . ' отписан от sms-оповещений при поступлении новых книг автора: ' . $subscribeForm->authors_names
                     );
                 }
             }

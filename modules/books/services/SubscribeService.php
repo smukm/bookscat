@@ -13,42 +13,44 @@ class SubscribeService
     /**
      * @throws Exception
      */
-    public function subscribe(SubscribeForm $subscribeForm): bool
+    public function subscribe(SubscribeForm $subscribeForm): void
     {
-        $subscriber = Subscriber::find()
-            ->where(['author_id'=> $subscribeForm->author_id])
-            ->andWhere(['phone' => $subscribeForm->phone])
-            ->one();
+        $authors = explode(';', $subscribeForm->author_ids);
 
-        if(!$subscriber) {
-            $subscriber = Subscriber::create($subscribeForm->author_id, $subscribeForm->phone);
-            if(!$subscriber->save()) {
-                throw new DomainException('Unable to subscribe');
+        foreach ($authors as $author_id) {
+            $subscriber = Subscriber::find()
+                ->where(['author_id' => $author_id])
+                ->andWhere(['phone' => $subscribeForm->phone])
+                ->one();
+
+            if(!$subscriber) {
+                $subscriber = Subscriber::create($author_id, $subscribeForm->phone);
+                if(!$subscriber->save()) {
+                    throw new DomainException('Unable to subscribe');
+                }
             }
-            return true;
         }
-
-        return false;
     }
 
     /**
      * @throws StaleObjectException
      * @throws \Throwable
      */
-    public function unsubscribe(SubscribeForm $subscribeForm): bool
+    public function unsubscribe(SubscribeForm $subscribeForm): void
     {
-        $subscriber = Subscriber::find()
-            ->where(['author_id'=> $subscribeForm->author_id])
-            ->andWhere(['phone' => $subscribeForm->phone])
-            ->one();
+        $authors = explode(';', $subscribeForm->author_ids);
 
-        if($subscriber) {
-            if($subscriber->delete() === false) {
-                throw new DomainException('Unable to unsubscribe');
+        foreach ($authors as $author_id) {
+            $subscriber = Subscriber::find()
+                ->where(['author_id'=> $author_id])
+                ->andWhere(['phone' => $subscribeForm->phone])
+                ->one();
+
+            if($subscriber) {
+                if($subscriber->delete() === false) {
+                    throw new DomainException('Unable to unsubscribe');
+                }
             }
-            return true;
         }
-
-        return false;
     }
 }

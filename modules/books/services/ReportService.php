@@ -12,13 +12,16 @@ class ReportService
     {
         $data = [];
 
-        $top = Book::find()->top10($reportForm->release_year)->all();
+        $top = Book::find()
+            ->top10($reportForm->release_year)
+            ->asArray()
+            ->all();
 
         foreach($top as $item) {
             $data[] = [
-                'id' => $item->author_id,
-                'author' => $item->author->fullName,
-                'books' => $item->cnt
+                'id' => $item['id'],
+                'author' => $item['fullname'],
+                'books' => $item['cnt']
             ];
         }
 

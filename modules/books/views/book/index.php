@@ -29,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             [
                 'attribute' => 'photo',
@@ -47,9 +46,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'release_year',
             'isbn',
             [
-                'attribute' => 'author_name',
+                'attribute' => 'authors',
+                'header' => Yii::t('books', 'Author(s)'),
                 'value' => static function ($data) {
-                    return $data->author->fullName;
+                    $ret = [];
+                    foreach($data->authors as $author) {
+                        $ret[] = $author->fullName;
+                    }
+                    return implode(', ', $ret);
                 }
             ],
             [

@@ -20,7 +20,7 @@ YiiAsset::register($this);
     <h1><?= Html::encode($this->title) ?></h1>
     <?php if(!Yii::$app->user->isGuest):?>
     <p>
-        <?= Html::a(Yii::t('books', 'Update'), ['update', 'id' => $author->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('books', 'Edit'), ['edit', 'id' => $author->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('books', 'Delete'), ['delete', 'id' => $author->id], [
             'class' => 'btn btn-danger',
             'data' => [

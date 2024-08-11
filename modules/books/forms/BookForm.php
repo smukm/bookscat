@@ -21,7 +21,8 @@ class BookForm extends Model
 
     public UploadedFile|string|null $photo = null;
 
-    public int $author_id = 0;
+
+    public string|array $authors = [];
 
     public bool $isNewRecord = false;
 
@@ -37,7 +38,9 @@ class BookForm extends Model
         return [
             [['description'], 'string'],
             [['release_year'], 'required'],
-            [['release_year', 'author_id'], 'integer'],
+            [['release_year'], 'integer'],
+            [['authors'], 'required'],
+            [['authors'], 'validateAuthors'],
             [['title'], 'trim'],
             [['title'], 'required'],
             [['title'], 'string', 'max' => 255],
@@ -63,13 +66,6 @@ class BookForm extends Model
                     return $model->isNewRecord;
                 }
             ],
-            [
-                ['author_id'],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => Author::class,
-                'targetAttribute' => ['author_id' => 'id']
-            ],
         ];
     }
 
@@ -81,7 +77,7 @@ class BookForm extends Model
             'release_year' => Yii::t('books','Release Year'),
             'isbn' => Yii::t('books','ISBN'),
             'photo' => Yii::t('books','Photo'),
-            'author_id' => Yii::t('books','Author ID'),
+            'authors' => Yii::t('books','Authors'),
         ];
     }
 
@@ -101,6 +97,21 @@ class BookForm extends Model
         }
     }
 
+    public function validateAuthors($attribute)
+    {
+        $authors = $this->$attribute;
+        if(!is_array($authors)) {
+            $this->addError($attribute, Yii::t('books', 'The author not chosen'));
+        }
+
+        foreach($authors as $author_id) {
+            $author = Author::findOne($author_id);
+            if(!$author) {
+                $this->addError($attribute, Yii::t('books', 'The author not chosen'));
+            }
+        }
+    }
+
     public function validateIsbn($attribute): void
     {
         $isbn = $this->$attribute;
@@ -116,7 +127,7 @@ class BookForm extends Model
             }
 
             if (!$isValid) {
-                throw new InvalidArgumentException('Not valid ISBN');
+                throw new InvalidArgumentException(Yii::t('books', 'Not valid ISBN'));
             }
 
         } catch (InvalidArgumentException $ex) {

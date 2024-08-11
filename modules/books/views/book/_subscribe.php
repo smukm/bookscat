@@ -22,8 +22,9 @@ use yii\widgets\Pjax;
     ]
 ]); ?>
 <div class="modal-body">
-    <h5 id="author-name">Автор: <?=$subscribeForm->author_name?></h5>
-    <?php echo $form->field($subscribeForm, 'author_id')
+    <h5 id="author-name">Автор: <?=$subscribeForm->authors_names?></h5>
+
+    <?php echo $form->field($subscribeForm, 'author_ids')
         ->hiddenInput()->label(false); ?>
 
     <?php echo $form->field($subscribeForm, 'phone')

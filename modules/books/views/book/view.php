@@ -20,7 +20,7 @@ YiiAsset::register($this);
 
     <p>
         <?php if(!Yii::$app->user->isGuest):?>
-            <?= Html::a(Yii::t('books','Update'), ['edit', 'id' => $book->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('books','Edit'), ['edit', 'id' => $book->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a(Yii::t('books','Delete'), ['delete', 'id' => $book->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
@@ -31,6 +31,10 @@ YiiAsset::register($this);
         <?php endif;?>
     </p>
 
+    <?php
+    //dd($book->authors);
+
+    ?>
     <?= DetailView::widget([
         'model' => $book,
         'attributes' => [
@@ -51,9 +55,16 @@ YiiAsset::register($this);
                 }
             ],
             [
-                'attribute' => 'author_id',
+                'attribute' => 'author',
                 'label' => Yii::t('books', 'Author'),
-                'value' => $book->author->fullName
+                'value' => function () use ($book) {
+                    $ret = [];
+                    foreach($book->authors as $author) {
+                        $ret[] = $author->fullName;
+                    }
+                    return implode(', ', $ret);
+                    //$book->author->fullName
+                }
             ],
         ],
     ]) ?>

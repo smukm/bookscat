@@ -2,14 +2,14 @@
 return [
     [
         'author_id' => '1',
-        'phone' => '72223334444',
+        'book_id' => '1',
     ],
     [
         'author_id' => '1',
-        'phone' => '72223334445',
+        'book_id' => '2',
     ],
     [
         'author_id' => '2',
-        'phone' => '72223334445',
+        'book_id' => '3',
     ],
 ];

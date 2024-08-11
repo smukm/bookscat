@@ -7,6 +7,7 @@ return [
     'Release Year' => 'Год выпуска',
     'Photo' => 'Фото',
     'Authors' => 'Авторы',
+    'Author(s)' => 'Автор(ы)',
     'Author' => 'Автор',
     'Create Author' => 'Новый автор',
     'Author ID' => 'Автор',
@@ -19,6 +20,7 @@ return [
     'Report' => 'Отчет',
     'Books count' => 'Количество книг',
     'Update' => 'Обновить',
+    'Edit' => 'Редактировать',
     'Delete' => 'Удалить',
     'Save' => 'Сохранить',
     'Close' => 'Закрыть',
@@ -29,4 +31,7 @@ return [
     'Subscribe/Unsubscribe' => 'Подписаться/Отменить подписку',
     'Subscribe to author books' => 'Подписка на оповещение о поступлении новых книг автора',
     'The phone must have 11 digits' => 'Номер телефона должен состоять из 11 цифр',
+    'Can`t upload a photo' => 'Ошибка загрузки фото',
+    'The author not chosen' => 'Не выбран автор',
+    'Not valid ISBN' => 'Неправильный ISBN',
 ];

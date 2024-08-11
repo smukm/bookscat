@@ -3,6 +3,7 @@
 namespace modules\books\entities;
 
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
@@ -16,9 +17,6 @@ use yii\helpers\Url;
  * @property int|null $release_year
  * @property string|null $isbn
  * @property string|null $photo
- * @property int|null $author_id
- *
- * @property Author $author
  */
 class Book extends ActiveRecord
 {
@@ -29,7 +27,6 @@ class Book extends ActiveRecord
         string $title,
         int $release_year,
         string $isbn,
-        int $author_id,
         string $description=''
     ): self
     {
@@ -37,7 +34,6 @@ class Book extends ActiveRecord
         $model->title = $title;
         $model->release_year = $release_year;
         $model->isbn = $isbn;
-        $model->author_id = $author_id;
         $model->description = $description;
 
         return $model;
@@ -57,18 +53,24 @@ class Book extends ActiveRecord
             'release_year' => Yii::t('books','Release Year'),
             'isbn' => Yii::t('books','ISBN'),
             'photo' => Yii::t('books','Photo'),
-            'author_id' => Yii::t('books','Author ID'),
         ];
     }
 
+
     /**
-     * Gets query for [[Author]].
-     *
-     * @return ActiveQuery|AuthorQuery
+     * @throws InvalidConfigException
      */
-    public function getAuthor(): AuthorQuery|ActiveQuery
+    public function getAuthors(): ActiveQuery
     {
-        return $this->hasOne(Author::class, ['id' => 'author_id']);
+        return $this->hasMany(Author::class, ['id' => 'author_id'])
+            ->viaTable(AuthorBook::tableName(), ['book_id' => 'id']);
+    }
+
+    public function getAuthorsIds(): array
+    {
+        return array_map(function ($item) {
+            return $item->id;
+        }, $this->authors);
     }
 
     public function getPhotoUrl(): string

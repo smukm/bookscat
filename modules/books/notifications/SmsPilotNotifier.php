@@ -17,7 +17,7 @@ class SmsPilotNotifier implements SubscribeNotifyContract
             return;
         }
 
-        $text = 'We have a new ' . $book->author->lastname . '`s book';
+        $text = 'We have a new book: ' . $book->title;
 
         $send = $this->composeSend($subscribers, $text);
 

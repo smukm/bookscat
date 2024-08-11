@@ -1,5 +1,6 @@
 <?php
 
+use kartik\select2\Select2;
 use modules\books\entities\Author;
 use modules\books\forms\BookForm;
 use yii\helpers\ArrayHelper;
@@ -56,8 +57,20 @@ use yii\widgets\ActiveForm;
     </div>
 
     <div class="mb-3">
-        <?= $form->field($bookForm, 'author_id')
-            ->dropDownList(ArrayHelper::merge(['0' => '---'], Author::getList())) ?>
+        <?= $form->field($bookForm, 'authors')->widget(Select2::class, [
+            'data'          => Author::getList(),
+            'theme'         => Select2::THEME_BOOTSTRAP,
+            'options'       => [
+                'class'       => 'form-control',
+                'placeholder' => '-- выберите --',
+                'encode'      => false,
+                'multiple'    => true
+            ],
+            'pluginOptions' => [
+                'allowClear'    => true,
+                'selectOnClose' => true,
+            ]
+        ])->label(Yii::t('books','Author(s)')); ?>
     </div>
 
     <div class="form-group">
