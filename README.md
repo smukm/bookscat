@@ -1,6 +1,7 @@
 # Yii2 + MySQL каталог книг
 
-тесты
+### тесты
+```bash
 ./bin/codecept run -c frontend functional BookCest
 ./bin/codecept run -c frontend unit books
-
+```
