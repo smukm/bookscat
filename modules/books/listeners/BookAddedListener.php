@@ -3,7 +3,7 @@
 namespace modules\books\listeners;
 
 use modules\books\contracts\SubscribeNotifyContract;
-use modules\books\entities\SubscriberUser;
+
 use modules\books\events\BookAddedEvent;
 
 class BookAddedListener

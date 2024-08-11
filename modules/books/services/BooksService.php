@@ -11,6 +11,7 @@ use modules\books\events\BookAddedEvent;
 use modules\books\forms\BookForm;
 use Throwable;
 use Yii;
+use yii\db\ActiveRecord;
 use yii\db\Exception;
 use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
@@ -96,7 +97,7 @@ class BooksService
     /**
      * @throws NotFoundHttpException
      */
-    public function findBook(int $id): Book
+    public function findBook(int $id): array|ActiveRecord|null
     {
         if (($model = Book::find()->with('author')->where(['id' => $id])->one()) !== null) {
             return $model;
