@@ -4,6 +4,7 @@ namespace frontend\tests\functional;
 
 use common\fixtures\UserFixture;
 use frontend\tests\FunctionalTester;
+use modules\books\fixtures\AuthorBookFixture;
 use modules\books\fixtures\AuthorFixture;
 use modules\books\fixtures\BookFixture;
 use modules\books\fixtures\SubscriberFixture;
@@ -24,6 +25,10 @@ class BookCest
             'book' => [
                 'class' => BookFixture::class,
                 'dataFile' => '@modules/books/fixtures/data/book.php'
+            ],
+            'author_book' => [
+                'class' => AuthorBookFixture::class,
+                'dataFile' => '@modules/books/fixtures/data/author_book.php'
             ],
             'subscriber' => [
                 'class' => SubscriberFixture::class,
