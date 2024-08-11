@@ -1,0 +1,152 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: ./docker/workspace
+      args:
+        - LARADOCK_PHP_VERSION=8.3
+        - INSTALL_NODE=true
+        - INSTALL_YARN=true
+        - INSTALL_NPM_GULP=true
+        - INSTALL_NPM_BOWER=false
+        - INSTALL_NPM_VUE_CLI=true
+        - INSTALL_NPM_ANGULAR_CLI=false
+        - COMPOSER_GLOBAL_INSTALL=true
+        - COMPOSER_VERSION=2
+        - INSTALL_WORKSPACE_SSH=false
+        - INSTALL_SUPERVISOR=true
+        - INSTALL_GIT_PROMPT=true
+        - CHROME_DRIVER_VERSION=2.42
+        - NODE_VERSION=18.17.1
+        - YARN_VERSION=latest
+        - INSTALL_PYTHON=true
+        - INSTALL_PYTHON3=true
+        - INSTALL_XDEBUG=true
+        - USER_ID=1000
+        - GROUP_ID=1000
+    volumes:
+      - ./:/app
+    ports:
+      - "2222:22"
+      - "8080:8080"
+      - "8001:8000"
+    tty: true
+    environment:
+      - DOCKER_TLS_VERIFY=1
+      - DOCKER_TLS_CERTDIR=/certs
+      - DOCKER_CERT_PATH=/certs/client
+  php-fpm-83:
+    container_name: bookscat-php-fpm-83
+    build:
+      context: ./docker/php-fpm-83/
+      args:
+        - INSTALL_MEMCACHED=true
+        - INSTALL_INTL=true
+        - INSTALL_IMAGEMAGICK=true
+    volumes:
+      - ./:/app
+      - ./docker/php-fpm-83/php.ini:/usr/local/etc/php/conf.d/custom.ini
+    expose:
+      - 9000
+    depends_on:
+      - db
+    environment:
+      TZ: Europe/Moscow
+      XDEBUG_CONFIG: "remote_enable=Off remote_autostart=Off"
+  php-worker:
+    build:
+      context: ./docker/php-worker
+      args:
+        - LARADOCK_PHP_VERSION=8.3
+        - INSTALL_GD=true
+        - INSTALL_IMAGEMAGICK=true
+        - INSTALL_GMP=true
+        - INSTALL_MEMCACHED=true
+        - INSTALL_XLSWRITER=true
+        - INSTALL_SOAP=true
+        - INSTALL_ZIP_ARCHIVE=true
+        - INSTALL_MYSQL_CLIENT=true
+        - INSTALL_REDIS=true
+        - INSTALL_INTL=true
+        - PUID=1000
+        - PGID=1000
+        - IMAGEMAGICK_VERSION=latest
+    volumes:
+      - ./:/app
+      - ./docker/php-worker/supervisord.d:/etc/supervisord.d
+    ports:
+      - "8004:8004" # for connections to websocket server
+    links:
+      - app
+    depends_on:
+      - app
+      - redis
+  redis:
+    container_name: bookcat_redis
+    image: redis:5.0.7-alpine
+    command: redis-server /etc/redis/conf.d/redis.conf --requirepass yii2advancedredis
+    ports:
+      - "6379"
+    volumes:
+      - ./docker/redis/data:/data
+      - ./docker/redis/conf:/etc/redis/conf.d
+    environment:
+      TZ: Europe/Moscow
+  nginx:
+    build:
+      context: ./docker/nginx
+      args:
+        - PHP_UPSTREAM_CONTAINER=php-fpm-83
+        - PHP_UPSTREAM_PORT=9000
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - php-fpm-83
+      - db
+      - redis
+    volumes:
+      - ./:/app
+      - ./docker/nginx/conf:/etc/nginx/conf.d
+      - ./docker/nginx/logs:/var/log/nginx
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+    networks:
+      default:
+        aliases:
+          - bookscat.test # for access via curl
+    environment:
+      TZ: Europe/Moscow
+  db:
+    image: mysql:8
+    container_name: bookscat_db
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/config.cnf:/etc/mysql/conf.d/config.cnf
+    ports:
+      - 3336:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bookscat
+      MYSQL_ROOT_USER: root
+      MYSQL_PASSWORD: root
+    command:
+      mysqld --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+  phpmyadmin:
+    container_name: bookscat_pma
+    image: phpmyadmin
+    ports:
+      - 8088:80
+    links:
+      - db
+    environment:
+      MYSQL_USERNAME: root;
+      MYSQL_ROOT_PASSWORD: root
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+networks:
+  default:
+    name: bookscat
