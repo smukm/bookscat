@@ -1,11 +1,12 @@
 <?php
 if(!function_exists('ini_get_size')) {
-    function ini_get_size(string $sName): int
+    function ini_get_size(string $name): int
     {
-        $sSize = ini_get($sName);
-        $sUnit = substr($sSize, -1);
-        $iSize = (int) substr($sSize, 0, -1);
-        switch (strtoupper($sUnit))
+        $size = ini_get($name);
+        $unit = substr($size, -1);
+        $iSize = (int) substr($size, 0, -1);
+
+        switch (strtoupper($unit))
         {
             case 'Y' : $iSize *= 1024; // Yotta
             case 'Z' : $iSize *= 1024; // Zetta
@@ -16,6 +17,7 @@ if(!function_exists('ini_get_size')) {
             case 'M' : $iSize *= 1024; // Mega
             case 'K' : $iSize *= 1024; // kilo
         }
+
         return $iSize;
     }
 }
@@ -23,7 +25,6 @@ if(!function_exists('ini_get_size')) {
 if(!function_exists('print_file_size')) {
     function print_file_size(int $file_size): string
     {
-
         if ($file_size >= 1073741824) {
             $file_size = (round($file_size / 1073741824 * 100) / 100) . " Гб.";
         } elseif ($file_size >= 1048576) {
@@ -33,6 +34,7 @@ if(!function_exists('print_file_size')) {
         } else {
             $file_size .= " Байт";
         }
+
         return $file_size;
     }
 }
