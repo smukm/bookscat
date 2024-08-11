@@ -2,6 +2,6 @@
 
 ### тесты
 ```bash
-./bin/codecept run -c frontend functional BookCest
-./bin/codecept run -c frontend unit books
+./vendor/bin/codecept run -c frontend functional BookCest
+./vendor/bin/codecept run -c frontend unit books
 ```
