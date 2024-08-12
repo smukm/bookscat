@@ -25,7 +25,7 @@ class BookSearch extends Book
 
     public function search($params): ActiveDataProvider
     {
-        $query = Book::find();
+        $query = Book::find()->with('authors');
 
         // add conditions that should always apply here
 
