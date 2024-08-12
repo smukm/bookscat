@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace modules\books\services;
 
 use DomainException;
 use modules\books\entities\Subscriber;
 use modules\books\forms\SubscribeForm;
+use Throwable;
 use yii\db\Exception;
 use yii\db\StaleObjectException;
 
@@ -24,7 +27,7 @@ class SubscribeService
                 ->one();
 
             if(!$subscriber) {
-                $subscriber = Subscriber::create($author_id, $subscribeForm->phone);
+                $subscriber = Subscriber::create((int)$author_id, $subscribeForm->phone);
                 if(!$subscriber->save()) {
                     throw new DomainException('Unable to subscribe');
                 }
@@ -34,7 +37,7 @@ class SubscribeService
 
     /**
      * @throws StaleObjectException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function unsubscribe(SubscribeForm $subscribeForm): void
     {
