@@ -13,7 +13,7 @@ class AuthorForm extends Model
 
     public string $lastname = '';
 
-    public function rules()
+    public function rules(): array
     {
         return [
             [['firstname', 'middlename', 'lastname'], 'trim'],
@@ -21,7 +21,7 @@ class AuthorForm extends Model
             [['firstname', 'middlename', 'lastname'], 'string', 'max' => 255],
         ];
     }
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'firstname' => Yii::t('books', 'Firstname'),
