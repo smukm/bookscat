@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace modules\books\controllers;
 
 use modules\books\forms\ReportForm;
