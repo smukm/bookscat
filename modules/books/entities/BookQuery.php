@@ -12,7 +12,7 @@ class BookQuery extends ActiveQuery
         return parent::all($db);
     }
 
-    public function one($db = null): array|ActiveRecord|null
+    public function one($db = null): array|ActiveRecord|null|Book
     {
         return parent::one($db);
     }

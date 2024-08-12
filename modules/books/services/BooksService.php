@@ -134,7 +134,7 @@ class BooksService
     /**
      * @throws NotFoundHttpException
      */
-    public function findBook(int $id): array|ActiveRecord|null
+    public function findBook(int $id): array|ActiveRecord|null|Book
     {
         if (($model = Book::find()
                 ->with('authors')
