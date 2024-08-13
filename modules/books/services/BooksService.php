@@ -21,9 +21,7 @@ use yii\web\UploadedFile;
 
 class BooksService
 {
-    /**
-     * @throws Exception
-     */
+
     public function createBook(BookForm $form): Book
     {
         $book = Book::create(
@@ -75,30 +73,39 @@ class BooksService
         return $book;
     }
 
-
     /**
      * @throws Exception
      * @throws StaleObjectException
+     * @throws Throwable
      */
     private function setAuthors(Book $book, array $author_ids): void
     {
-        foreach ($book->authors as $old_relation) {
-            $book->unlink('authors', $old_relation, true);
-        }
+        $transaction = Yii::$app->db->beginTransaction();
 
-        $authors = [];
-        foreach ($author_ids as $author_id) {
-            $author = Author::findOne($author_id);
-            if(!$author) {
-                continue;
+        try {
+            foreach ($book->authors as $old_relation) {
+                $book->unlink('authors', $old_relation, true);
             }
 
-            $authors[] = $author;
+            $authors = [];
+            foreach ($author_ids as $author_id) {
+                $author = Author::findOne($author_id);
+                if (!$author) {
+                    continue;
+                }
 
-            $book->link('authors', $author);
+                $authors[] = $author;
+
+                $book->link('authors', $author);
+            }
+
+            $book->populateRelation('authors', $authors);
+            $transaction->commit();;
+
+        } catch (Throwable $ex) {
+            $transaction->rollBack();
+            throw $ex;
         }
-
-        $book->populateRelation('authors', $authors);
     }
 
     /**
