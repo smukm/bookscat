@@ -59,7 +59,7 @@ class BookForm extends Model
             [['isbn'], 'trim'],
             [['isbn'], 'string'],
             [['isbn'], 'required'],
-            //[['isbn'], 'validateIsbn'],
+            [['isbn'], 'validateIsbn'],
             [
                 ['isbn'],
                 'unique',
