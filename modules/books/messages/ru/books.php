@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 return [
     'Books' => 'Книги',
     'Create Book' => 'Добавить книгу',

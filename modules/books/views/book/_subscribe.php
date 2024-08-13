@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use modules\books\forms\SubscribeForm;
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;

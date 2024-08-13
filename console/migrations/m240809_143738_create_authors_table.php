@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use yii\db\Migration;
 
 /**
@@ -10,7 +12,7 @@ class m240809_143738_create_authors_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeUp()
+    public function safeUp(): void
     {
         $this->createTable('{{%authors}}', [
             'id' => $this->bigPrimaryKey()->unsigned(),
@@ -26,7 +28,7 @@ class m240809_143738_create_authors_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): void
     {
         $this->dropTable('{{%authors}}');
     }

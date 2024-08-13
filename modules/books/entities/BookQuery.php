@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace modules\books\entities;
 
 use yii\db\ActiveQuery;

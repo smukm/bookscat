@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 return [
     'sourcePath' => dirname(__DIR__),
     'messagePath' => __DIR__,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use modules\books\entities\Book;
 use modules\books\forms\BookForm;
 use yii\helpers\Html;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use yii\bootstrap5\Modal;
 
 Modal::begin([

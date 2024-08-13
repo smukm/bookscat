@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use modules\books\entities\Author;
 use yii\helpers\Html;
 use yii\web\YiiAsset;

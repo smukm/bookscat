@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
 /**

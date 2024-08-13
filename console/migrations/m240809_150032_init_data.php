@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use common\models\User;
 use yii\db\Migration;
 
@@ -11,7 +13,7 @@ class m240809_150032_init_data extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeUp()
+    public function safeUp(): void
     {
         $this->insert('{{%user}}', [
             'username' => 'user',
@@ -27,23 +29,9 @@ class m240809_150032_init_data extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): void
     {
         $this->delete('{{%user}}', ['email' => 'user@bookscat.test']);
     }
 
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m240809_150032_init_data cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

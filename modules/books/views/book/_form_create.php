@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use kartik\select2\Select2;
 use modules\books\entities\Author;
 use modules\books\forms\BookForm;

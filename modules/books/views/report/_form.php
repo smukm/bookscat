@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use modules\books\forms\ReportForm;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;

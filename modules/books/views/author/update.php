@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use modules\books\entities\Author;
 use modules\books\forms\AuthorForm;
 use yii\helpers\Html;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use yii\helpers\Html;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;

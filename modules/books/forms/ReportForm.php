@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace modules\books\forms;
 
 use yii\base\Model;
@@ -13,7 +15,7 @@ class ReportForm extends Model
     {
         parent::__construct($config);
 
-        $this->release_year = date('Y');
+        $this->release_year = (int) date('Y');
     }
 
     public function rules(): array

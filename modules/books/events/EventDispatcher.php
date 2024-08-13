@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace modules\books\events;
 
 use modules\books\contracts\EventDispatcherContract;

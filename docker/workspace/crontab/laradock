@@ -1,2 +1,2 @@
-* * * * * laradock /usr/bin/php /app/console/yii schedule/run --scheduleFile=@console/cron/schedule.php 1>> /dev/null 2>&1
+* * * * * laradock /usr/bin/php yii schedule/run --scheduleFile=@console/cron/schedule.php 1>> /dev/null 2>&1
 
