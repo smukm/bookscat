@@ -39,13 +39,6 @@ class Book extends ActiveRecord
         return $model;
     }
 
-    public function transactions(): array
-    {
-        return [
-            self::SCENARIO_DEFAULT => self::OP_INSERT | self::OP_UPDATE,
-        ];
-    }
-
     public static function tableName(): string
     {
         return 'books';
