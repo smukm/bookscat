@@ -59,7 +59,7 @@ $js = <<< JS
         // reload select with created author
         $.pjax.reload({
             container:"#author-select-container",
-            url: url, 
+            url: url
         });
         
         // close the modal
