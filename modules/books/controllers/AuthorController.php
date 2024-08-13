@@ -42,15 +42,17 @@ class AuthorController extends Controller
                     'class' => VerbFilter::class,
                     'actions' => [
                         'create' => ['GET'],
+                        'create-ajax' => ['GET'],
                         'edit' => ['GET'],
                         'store' => ['POST'],
+                        'store-ajax' => ['POST'],
                         'update' => ['PUT'],
                         'delete' => ['POST'],
                     ],
                 ],
                 'access' => [
                     'class' => AccessControl::class,
-                    'only' => ['create', 'store', 'edit', 'update', 'delete'],
+                    'only' => ['create', 'create-ajax', 'store', 'store-ajax', 'edit', 'update', 'delete'],
                     'rules' => [
                         [
                             'allow' => true,
@@ -85,27 +87,30 @@ class AuthorController extends Controller
     }
 
 
-    public function actionCreate(bool $with_pjax = false): string
+    public function actionCreate(): string
     {
         $authorForm = new AuthorForm();
 
-        if($with_pjax) {
-            return $this->renderAjax('create', [
-                'authorForm' => $authorForm,
-                'with_pjax' => $with_pjax,
-            ]);
-        } else{
-            return $this->render('create', [
-                'authorForm' => $authorForm,
-                'with_pjax' => $with_pjax,
-            ]);
-        }
+        return $this->render('create', [
+            'authorForm' => $authorForm,
+            'with_pjax' => false,
+        ]);
+
+    }
+
+    public function actionCreateAjax(): string
+    {
+        $authorForm = new AuthorForm();
+
+        return $this->renderAjax('create', [
+            'authorForm' => $authorForm,
+            'with_pjax' => true,
+        ]);
 
     }
 
     public function actionStore(): Response|string
     {
-
         $authorForm = new AuthorForm();
 
         try {
@@ -113,27 +118,39 @@ class AuthorController extends Controller
 
                 $author = $this->authorsService->createAuthor($authorForm);
 
-                if(!Yii::$app->request->isPjax) {
-                    return $this->redirect(['view', 'id' => $author->id]);
-                }
+                return $this->redirect(['view', 'id' => $author->id]);
             }
 
         } catch(Throwable $ex) {
             Yii::$app->session->setFlash('error', $ex->getMessage());
         }
 
-        if(Yii::$app->request->isPjax) {
-            return $this->renderAjax('create', [
-                'authorForm' => $authorForm,
-                'with_pjax' => true,
-            ]);
-        } else {
-            return $this->render('create', [
-                'authorForm' => $authorForm,
-                'with_pjax' => false,
-            ]);
+        return $this->render('create', [
+            'authorForm' => $authorForm,
+            'with_pjax' => false,
+        ]);
+    }
+
+    public function actionStoreAjax()
+    {
+        $authorForm = new AuthorForm();
+
+        try {
+            if($authorForm->load($this->request->post()) && $authorForm->validate()) {
+
+                $this->authorsService->createAuthor($authorForm);
+
+            }
+
+        } catch(Throwable $ex) {
+            //@todo
+            Yii::$app->session->setFlash('error', $ex->getMessage());
         }
 
+        return $this->renderAjax('create', [
+            'authorForm' => $authorForm,
+            'with_pjax' => true,
+        ]);
     }
 
     /**
