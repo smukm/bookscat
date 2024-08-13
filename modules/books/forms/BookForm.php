@@ -59,7 +59,7 @@ class BookForm extends Model
             [['isbn'], 'trim'],
             [['isbn'], 'string'],
             [['isbn'], 'required'],
-            [['isbn'], 'validateIsbn'],
+            //[['isbn'], 'validateIsbn'],
             [
                 ['isbn'],
                 'unique',
@@ -99,7 +99,7 @@ class BookForm extends Model
         }
     }
 
-    public function validateAuthors($attribute)
+    public function validateAuthors($attribute): void
     {
         $authors = $this->$attribute;
         if(!is_array($authors)) {

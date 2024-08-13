@@ -99,10 +99,8 @@ class BookController extends Controller
 
     public function actionCreate(): string
     {
-        $bookForm = new BookForm();
-
         return $this->render('create', [
-            'bookForm' => $bookForm,
+            'bookForm' => new BookForm(),
         ]);
     }
 

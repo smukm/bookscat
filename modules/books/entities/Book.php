@@ -23,8 +23,6 @@ use yii\helpers\Url;
 class Book extends ActiveRecord
 {
 
-    public int $cnt;
-
     public static function create(
         string $title,
         int $release_year,
@@ -39,6 +37,13 @@ class Book extends ActiveRecord
         $model->description = $description;
 
         return $model;
+    }
+
+    public function transactions(): array
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_INSERT | self::OP_UPDATE,
+        ];
     }
 
     public static function tableName(): string

@@ -6,6 +6,7 @@ namespace modules\books\services;
 
 
 use DomainException;
+use modules\books\entities\Author;
 use modules\books\entities\AuthorBook;
 use modules\books\entities\Book;
 use modules\books\events\BookAddedEvent;
@@ -29,7 +30,6 @@ class BooksService
             title: $form->title,
             release_year: $form->release_year,
             isbn: $form->isbn,
-            //author_id: $form->author_id,
             description: $form->description
         );
 
@@ -76,36 +76,29 @@ class BooksService
     }
 
 
-    private function setAuthors(Book $book, array $authors): void
+    /**
+     * @throws Exception
+     * @throws StaleObjectException
+     */
+    private function setAuthors(Book $book, array $author_ids): void
     {
-
-        $transaction = Yii::$app->db->beginTransaction();
-
-        try {
-
-
-            $old = AuthorBook::find()->where(['book_id' => $book->id])->all();
-            if ($old) {
-                foreach ($old as $item) {
-                    $item->delete();
-                }
-            }
-
-            foreach ($authors as $author_id) {
-                $ab = new AuthorBook();
-                $ab->book_id = $book->id;
-                $ab->author_id = $author_id;
-                $ab->save();
-            }
-
-            $transaction->commit();
-
-        } catch (Throwable $ex) {
-            $transaction->rollBack();
-            dd($ex->getTraceAsString());
+        foreach ($book->authors as $old_relation) {
+            $book->unlink('authors', $old_relation, true);
         }
 
+        $authors = [];
+        foreach ($author_ids as $author_id) {
+            $author = Author::findOne($author_id);
+            if(!$author) {
+                continue;
+            }
 
+            $authors[] = $author;
+
+            $book->link('authors', $author);
+        }
+
+        $book->populateRelation('authors', $authors);
     }
 
     /**
