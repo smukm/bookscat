@@ -23,6 +23,8 @@ class m240809_143738_create_authors_table extends Migration
             'lastname' => $this->string(255)
                 ->notNull(),
         ]);
+
+        $this->createIndex('idx_authors_lastname', '{{%authors}}', 'lastname');
     }
 
     /**
