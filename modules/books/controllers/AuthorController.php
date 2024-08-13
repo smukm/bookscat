@@ -156,7 +156,7 @@ class AuthorController extends Controller
         ]);
     }
 
-    public function actionDelete($id): Response
+    public function actionDelete(int $id): Response
     {
         try {
             $this->authorsService->deleteAuthor($id);
