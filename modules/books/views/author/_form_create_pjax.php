@@ -18,7 +18,7 @@ use yii\widgets\Pjax;
 
     <?php $form = ActiveForm::begin([
         'method' => 'post',
-        'action' => ['store'],
+        'action' => ['store-ajax'],
         'options' => [
             'id' => 'author-create-form',
             'data-pjax' => true

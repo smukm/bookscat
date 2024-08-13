@@ -68,7 +68,7 @@ use yii\widgets\Pjax;
 
         <?=Html::a(
             Yii::t('books', 'Create a new author'),
-            ['author/create', 'with_pjax' => true],
+            ['author/create-ajax'],
             [
                 'title' => Yii::t('books','Create a new author'),
                 'class' => 'modalButton btn btn-warning'
