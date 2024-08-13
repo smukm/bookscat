@@ -19,6 +19,7 @@ return [
     'Lastname' => 'Фамилия',
     'Update Author: ' => 'Редактировать автора: ',
     'Update Book: ' => 'Редактировать книгу: ',
+    'Create a new author' => 'Создать нового автора',
     'Enter Release Year' => 'Введите год выпуска',
     'Report' => 'Отчет',
     'Books count' => 'Количество книг',
@@ -37,4 +38,5 @@ return [
     'Can`t upload a photo' => 'Ошибка загрузки фото',
     'The author not chosen' => 'Не выбран автор',
     'Not valid ISBN' => 'Неправильный ISBN',
+    'There is books of this author in database' => 'В базе есть книги этого автора',
 ];
