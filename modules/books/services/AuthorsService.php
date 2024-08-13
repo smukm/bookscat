@@ -60,14 +60,16 @@ class AuthorsService
     public function deleteAuthor(int $author_id): bool
     {
         if($this->isBooksExists($author_id)) {
-            throw new DomainException('There is books of this author in database');
+            throw new DomainException(\Yii::t('books', 'There is books of this author in database'));
         }
-        return $this->findAuthor($author_id)->delete();
+        return (bool)$this->findAuthor($author_id)->delete();
     }
 
     private function isBooksExists(int $author_id): bool
     {
-        return Book::find()->where(['author_id' => $author_id])->exists();
+        return Book::find()->joinWith('authors')
+            ->where(['author_book.author_id' => $author_id])
+            ->exists();
     }
 
     /**
