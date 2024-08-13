@@ -85,17 +85,27 @@ class AuthorController extends Controller
     }
 
 
-    public function actionCreate(): string
+    public function actionCreate(bool $with_pjax = false): string
     {
         $authorForm = new AuthorForm();
 
-        return $this->render('create', [
-            'authorForm' => $authorForm,
-        ]);
+        if($with_pjax) {
+            return $this->renderAjax('create', [
+                'authorForm' => $authorForm,
+                'with_pjax' => $with_pjax,
+            ]);
+        } else{
+            return $this->render('create', [
+                'authorForm' => $authorForm,
+                'with_pjax' => $with_pjax,
+            ]);
+        }
+
     }
 
     public function actionStore(): Response|string
     {
+
         $authorForm = new AuthorForm();
 
         try {
@@ -103,16 +113,27 @@ class AuthorController extends Controller
 
                 $author = $this->authorsService->createAuthor($authorForm);
 
-                return $this->redirect(['view', 'id' => $author->id]);
+                if(!Yii::$app->request->isPjax) {
+                    return $this->redirect(['view', 'id' => $author->id]);
+                }
             }
 
         } catch(Throwable $ex) {
             Yii::$app->session->setFlash('error', $ex->getMessage());
         }
 
-        return $this->render('create', [
-            'authorForm' => $authorForm,
-        ]);
+        if(Yii::$app->request->isPjax) {
+            return $this->renderAjax('create', [
+                'authorForm' => $authorForm,
+                'with_pjax' => true,
+            ]);
+        } else {
+            return $this->render('create', [
+                'authorForm' => $authorForm,
+                'with_pjax' => false,
+            ]);
+        }
+
     }
 
     /**
@@ -134,7 +155,7 @@ class AuthorController extends Controller
     /**
      * @throws NotFoundHttpException
      */
-    public function actionUpdate(int $id): Response|string
+    public function actionUpdate(int $id)
     {
         $authorForm = new AuthorForm();
 
