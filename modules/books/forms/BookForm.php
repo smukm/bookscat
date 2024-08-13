@@ -32,7 +32,7 @@ class BookForm extends Model
     {
         parent::__construct($config);
 
-        $this->release_year = date('Y');
+        $this->release_year = (int) date('Y');
     }
 
     public function rules(): array

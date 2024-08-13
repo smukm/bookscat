@@ -4,10 +4,10 @@ namespace frontend\tests\functional;
 
 use common\fixtures\UserFixture;
 use frontend\tests\FunctionalTester;
-use modules\books\fixtures\AuthorBookFixture;
-use modules\books\fixtures\AuthorFixture;
-use modules\books\fixtures\BookFixture;
-use modules\books\fixtures\SubscriberFixture;
+use modules\books\migrations\fixtures\AuthorBookFixture;
+use modules\books\migrations\fixtures\AuthorFixture;
+use modules\books\migrations\fixtures\BookFixture;
+use modules\books\migrations\fixtures\SubscriberFixture;
 
 class BookCest
 {

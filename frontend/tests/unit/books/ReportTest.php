@@ -3,14 +3,12 @@
 namespace frontend\tests\unit\books;
 
 use common\fixtures\UserFixture;
-use frontend\models\ContactForm;
-use modules\books\fixtures\AuthorBookFixture;
-use modules\books\fixtures\AuthorFixture;
-use modules\books\fixtures\BookFixture;
-use modules\books\fixtures\SubscriberFixture;
 use modules\books\forms\ReportForm;
+use modules\books\migrations\fixtures\AuthorBookFixture;
+use modules\books\migrations\fixtures\AuthorFixture;
+use modules\books\migrations\fixtures\BookFixture;
+use modules\books\migrations\fixtures\SubscriberFixture;
 use modules\books\services\ReportService;
-use yii\mail\MessageInterface;
 
 class ReportTest extends \Codeception\Test\Unit
 {

@@ -2,13 +2,7 @@
 
 namespace frontend\tests\unit\books;
 
-use common\fixtures\UserFixture;
-use modules\books\fixtures\AuthorFixture;
-use modules\books\fixtures\BookFixture;
-use modules\books\fixtures\SubscriberFixture;
 use modules\books\forms\BookForm;
-use modules\books\forms\ReportForm;
-use modules\books\services\ReportService;
 
 class IsbnValidatorTest extends \Codeception\Test\Unit
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace modules\books\fixtures;
+namespace modules\books\migrations\fixtures;
 
 use yii\test\ActiveFixture;
 
