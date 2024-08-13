@@ -143,7 +143,6 @@ class AuthorController extends Controller
             }
 
         } catch(Throwable $ex) {
-            //@todo
             Yii::$app->session->setFlash('error', $ex->getMessage());
         }
 
