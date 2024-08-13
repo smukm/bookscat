@@ -20,17 +20,8 @@ $this->registerJs( <<< EOT_JS_CODE
   $('.modalButton').click(function (e){
     e.preventDefault();
     
-    /*$.ajax({
-        url: $(this).attr('href'),
-        success: function (data) {
-            $('#modal').modal('show').find('#modalContent').html(data);
-            $('#author-name').html('bbb');
-        }
-    });*/
-    
     $.get($(this).attr('href'), function(data) {
         $('#modal').modal('show').find('#modalContent').html(data);
-        //$('#author-name').html('bbb');
     });
 
    return false;

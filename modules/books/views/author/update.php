@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = Yii::t('books','Update');
 ?>
 <div class="author-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($this->title) ?></h3>
 
     <?= $this->render('_form_update', [
         'author' => $author,

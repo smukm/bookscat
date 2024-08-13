@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use kartik\select2\Select2;
 use modules\books\entities\Author;
 use modules\books\forms\BookForm;
+use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\widgets\Pjax;
 
 /**
  * @var yii\web\View $this
@@ -40,7 +44,10 @@ use yii\widgets\ActiveForm;
     </div>
 </div>
 
-<div class="mb-3">
+<div class="row mb-3">
+    <div class="col-md-6">
+
+        <?php Pjax::begin(['id' => 'author-select-container']); ?>
     <?= $form->field($bookForm, 'authors')->widget(Select2::class, [
         'data'          => Author::getList(),
         'theme'         => Select2::THEME_BOOTSTRAP,
@@ -55,4 +62,20 @@ use yii\widgets\ActiveForm;
             'selectOnClose' => true,
         ]
     ])->label(Yii::t('books','Author(s)')); ?>
+        <?php Pjax::end(); ?>
+    </div>
+    <div class="col-md-6 pt-4">
+
+        <?=Html::a(
+            Yii::t('books', 'Create a new author'),
+            ['author/create', 'with_pjax' => true],
+            [
+                'title' => Yii::t('books','Create a new author'),
+                'class' => 'modalButton btn btn-warning'
+            ]
+        );
+        ?>
+        <div id="created_auhor_fio"></div>
+    </div>
 </div>
+<?php

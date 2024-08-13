@@ -93,4 +93,4 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 
-<?php echo $this->render('_modal');?>
+<?php echo $this->render('_modal_subscribe');?>

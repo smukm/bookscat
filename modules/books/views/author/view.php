@@ -19,7 +19,7 @@ YiiAsset::register($this);
 ?>
 <div class="author-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($this->title) ?></h3>
     <?php if(!Yii::$app->user->isGuest):?>
     <p>
         <?= Html::a(Yii::t('books', 'Edit'), ['edit', 'id' => $author->id], ['class' => 'btn btn-primary']) ?>

@@ -18,29 +18,21 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin([
         'method' => 'put',
-        'action' => ['update', 'id' => $author->id]
+        'action' => ['update', 'id' => $author->id],
+        'options' => [
+            'id' => 'author-update-form',
+            'data-pjax' => true
+        ]
     ]); ?>
 
-
-    <div class="mb-3">
-        <?= $form->field($authorForm, 'firstname')
-            ->textInput(['maxlength' => true]) ?>
-    </div>
-
-    <div class="mb-3">
-        <?= $form->field($authorForm, 'middlename')
-            ->textInput(['maxlength' => true]) ?>
-    </div>
-
-    <div class="mb-3">
-        <?= $form->field($authorForm, 'lastname')
-            ->textInput(['maxlength' => true]) ?>
-    </div>
+    <?=$this->render('_form', [
+        'form' => $form,
+        'authorForm' => $authorForm
+    ])?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('books', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
-
 </div>

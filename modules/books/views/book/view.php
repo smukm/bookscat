@@ -18,7 +18,7 @@ YiiAsset::register($this);
 ?>
 <div class="book-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($this->title) ?></h3>
 
     <p>
         <?php if(!Yii::$app->user->isGuest):?>

@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-use kartik\select2\Select2;
-use modules\books\entities\Author;
 use modules\books\forms\BookForm;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /**
@@ -20,7 +19,9 @@ use yii\widgets\ActiveForm;
         'method' => 'post',
         'action' => ['store'],
         'options' => [
+            'id' => 'book-form',
             'enctype' => 'multipart/form-data',
+            'data-edit-url' => Url::to(['create']),
         ],
     ]); ?>
 
@@ -36,3 +37,4 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+<?php echo $this->render('_modal_create_author');?>
