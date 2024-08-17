@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace modules\books\forms;
 
 use modules\books\entities\Author;
+use modules\books\forms\validators\PhoneValidator;
 use Yii;
 use yii\base\Model;
 
@@ -24,7 +25,7 @@ class SubscribeForm extends Model
             [['phone'], 'trim'],
             [['phone'], 'required'],
             [['phone'], 'string'],
-            [['phone'], 'phoneValidator'],
+            [['phone'], PhoneValidator::class],
             [['subscribe'], 'integer'],
             [['authors_names', 'author_ids'], 'string'],
             [['author_ids'], 'required'],
@@ -46,13 +47,6 @@ class SubscribeForm extends Model
         return parent::beforeValidate();
     }
 
-    public function phoneValidator($attrib): void
-    {
-        $phone = $this->$attrib;
-        if(strlen($phone) !== 11) {
-            $this->addError($attrib, Yii::t('books', 'The phone must have 11 digits'));
-        }
-    }
 
     public function setAuthorsNames(): void
     {
