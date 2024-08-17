@@ -41,7 +41,7 @@ class BookForm extends Model
         return [
             [['description'], 'string'],
             [['release_year'], 'required'],
-            [['release_year'], 'integer'],
+            [['release_year'], 'integer', 'min' => 1900, 'max' => (int)date('Y')],
             [['authors'], 'required'],
             [['authors'], 'validateAuthors'],
             [['title'], 'trim'],
