@@ -112,8 +112,7 @@ class BookController extends Controller
 
         // form ajax validation
         if (Yii::$app->request->isAjax && $bookForm->load(Yii::$app->request->post())) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($bookForm);
+            return $this->formAjaxVaidate($bookForm);
         }
 
         try {
@@ -158,9 +157,14 @@ class BookController extends Controller
     /**
      * @throws NotFoundHttpException
      */
-    public function actionUpdate(int $id): Response|string
+    public function actionUpdate(int $id): Response|string|array
     {
         $bookForm = new BookForm();
+
+        // form ajax validation
+        if (Yii::$app->request->isAjax && $bookForm->load(Yii::$app->request->post())) {
+            return $this->formAjaxVaidate($bookForm);
+        }
 
         try {
             if($bookForm->load($this->request->post()) && $bookForm->validate()) {
@@ -248,4 +252,11 @@ class BookController extends Controller
 
         return $this->redirect(['index']);
     }
+
+    private function formAjaxVaidate(BookForm $bookForm): array
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return ActiveForm::validate($bookForm);
+    }
+
 }
