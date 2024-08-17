@@ -22,7 +22,7 @@ class ReportForm extends Model
     {
         return [
             [['release_year'], 'required'],
-            [['release_year'], 'integer'],
+            [['release_year'], 'integer', 'min' => 1900, 'max' => (int)date('Y')],
         ];
     }
 
