@@ -39,7 +39,7 @@ use yii\widgets\Pjax;
             ->fileInput() ?>
     </div>
     <div class="col-md-6">
-        <?= $form->field($bookForm, 'isbn')
+        <?= $form->field($bookForm, 'isbn', ['enableAjaxValidation' => true])
             ->textInput(['maxlength' => true]) ?>
     </div>
 </div>

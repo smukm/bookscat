@@ -16,6 +16,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 
 class BookController extends Controller
@@ -104,10 +105,16 @@ class BookController extends Controller
         ]);
     }
 
-    public function actionStore(): Response|string
+    public function actionStore(): Response|string|array
     {
         $bookForm = new BookForm();
         $bookForm->isNewRecord = true;
+
+        // form ajax validation
+        if (Yii::$app->request->isAjax && $bookForm->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($bookForm);
+        }
 
         try {
             if($bookForm->load($this->request->post()) && $bookForm->validate()) {
