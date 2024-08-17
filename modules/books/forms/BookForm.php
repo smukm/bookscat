@@ -11,6 +11,7 @@ use modules\books\forms\validators\AuthorsValidator;
 use modules\books\forms\validators\IsbnValidator;
 use Yii;
 use yii\base\Model;
+use yii\db\ActiveQuery;
 use yii\web\UploadedFile;
 
 class BookForm extends Model
@@ -30,11 +31,14 @@ class BookForm extends Model
 
     public bool $isNewRecord = false;
 
-    public function __construct($config = [])
+    public int $id;
+
+    public function __construct(int $id = 0, $config = [])
     {
         parent::__construct($config);
 
         $this->release_year = (int) date('Y');
+        $this->id = $id;
     }
 
     public function rules(): array
@@ -66,8 +70,8 @@ class BookForm extends Model
                 ['isbn'],
                 'unique',
                 'targetClass' => Book::class,
-                'when' => function ($model) {
-                    return $model->isNewRecord;
+                'filter' => function (ActiveQuery $query) {
+                    $query->andWhere(['<>', 'id', $this->id]);
                 }
             ],
         ];

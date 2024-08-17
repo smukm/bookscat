@@ -143,7 +143,7 @@ class BookController extends Controller
     {
         $book = $this->booksService->findBook($id);
 
-        $bookForm = new BookForm();
+        $bookForm = new BookForm($id);
         $bookForm->setAttributes($book->attributes);
 
         $bookForm->authors = $book->getAuthorsIds();
@@ -159,7 +159,7 @@ class BookController extends Controller
      */
     public function actionUpdate(int $id): Response|string|array
     {
-        $bookForm = new BookForm();
+        $bookForm = new BookForm($id);
 
         // form ajax validation
         if (Yii::$app->request->isAjax && $bookForm->load(Yii::$app->request->post())) {
