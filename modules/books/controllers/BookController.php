@@ -108,7 +108,6 @@ class BookController extends Controller
     public function actionStore(): Response|string|array
     {
         $bookForm = new BookForm();
-        $bookForm->isNewRecord = true;
 
         // form ajax validation
         if (Yii::$app->request->isAjax && $bookForm->load(Yii::$app->request->post())) {

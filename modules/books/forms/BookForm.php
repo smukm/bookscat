@@ -26,10 +26,7 @@ class BookForm extends Model
 
     public UploadedFile|string|null $photo = null;
 
-
     public string|array $authors = [];
-
-    public bool $isNewRecord = false;
 
     public int $id;
 
