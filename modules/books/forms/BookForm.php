@@ -7,6 +7,7 @@ namespace modules\books\forms;
 use InvalidArgumentException;
 use modules\books\entities\Author;
 use modules\books\entities\Book;
+use modules\books\forms\validators\AuthorsValidator;
 use modules\books\forms\validators\IsbnValidator;
 use Yii;
 use yii\base\Model;
@@ -43,7 +44,7 @@ class BookForm extends Model
             [['release_year'], 'required'],
             [['release_year'], 'integer', 'min' => 1900, 'max' => (int)date('Y')],
             [['authors'], 'required'],
-            [['authors'], 'validateAuthors'],
+            [['authors'], AuthorsValidator::class],
             [['title'], 'trim'],
             [['title'], 'required'],
             [['title'], 'string', 'max' => 255],
@@ -99,44 +100,4 @@ class BookForm extends Model
             return false;
         }
     }
-
-    public function validateAuthors($attribute): void
-    {
-        $authors = $this->$attribute;
-        if(!is_array($authors)) {
-            $this->addError($attribute, Yii::t('books', 'The author not chosen'));
-        }
-
-        foreach($authors as $author_id) {
-            $author = Author::findOne($author_id);
-            if(!$author) {
-                $this->addError($attribute, Yii::t('books', 'The author not chosen'));
-            }
-        }
-    }
-
-    /*public function validateIsbn($attribute): void
-    {
-        $isbn = $this->$attribute;
-        $isbn = preg_replace('#\D#', '', $isbn);
-
-        try {
-            $isValid = false;
-
-            if(strlen($isbn) === 10) {
-                $isValid = $this->check10Isbn($isbn);
-            } elseif((strlen($isbn) === 13)) {
-                $isValid = $this->check13Isbn($isbn);
-            }
-
-            if (!$isValid) {
-                throw new InvalidArgumentException(Yii::t('books', 'Not valid ISBN'));
-            }
-
-        } catch (InvalidArgumentException $ex) {
-            $this->addError($attribute, $ex->getMessage());
-        }
-    }*/
-
-
 }
