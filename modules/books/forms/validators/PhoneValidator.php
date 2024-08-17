@@ -9,11 +9,11 @@ use yii\validators\Validator;
 
 class PhoneValidator extends Validator
 {
-    public function validateAttribute($model, $attribute)
+    public function validateAttribute($model, $attribute): void
     {
-        $phone = $model->$attrib;
+        $phone = $model->$attribute;
         if(strlen($phone) !== 11) {
-            $model->addError($attrib, Yii::t('books', 'The phone must have 11 digits'));
+            $model->addError($attribute, Yii::t('books', 'The phone must have 11 digits'));
         }
     }
 }
