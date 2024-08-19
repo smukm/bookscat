@@ -4,11 +4,11 @@ namespace modules\books\tests\unit;
 
 use common\fixtures\UserFixture;
 use modules\books\forms\ReportForm;
-use modules\books\migrations\fixtures\AuthorBookFixture;
-use modules\books\migrations\fixtures\AuthorFixture;
-use modules\books\migrations\fixtures\BookFixture;
-use modules\books\migrations\fixtures\SubscriberFixture;
 use modules\books\services\ReportService;
+use modules\books\tests\fixtures\AuthorBookFixture;
+use modules\books\tests\fixtures\AuthorFixture;
+use modules\books\tests\fixtures\BookFixture;
+use modules\books\tests\fixtures\SubscriberFixture;
 
 class ReportTest extends TestCase
 {
