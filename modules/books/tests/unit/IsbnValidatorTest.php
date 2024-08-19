@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace modules\books\tests\unit;
 
+use Codeception\Test\Unit;
 use modules\books\forms\BookForm;
 
-class IsbnValidatorTest extends TestCase
+class IsbnValidatorTest extends Unit
 {
     public function testValidIsbn13()
     {
