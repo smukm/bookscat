@@ -4,7 +4,7 @@ namespace modules\books\tests\unit;
 
 use modules\books\forms\BookForm;
 
-class IsbnValidatorTest extends \Codeception\Test\Unit
+class IsbnValidatorTest extends TestCase
 {
     public function testValidIsbn13()
     {
