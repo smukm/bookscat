@@ -13,7 +13,7 @@ class AuthorsValidator extends Validator
     public function validateAttribute($model, $attribute): void
     {
         $authors = $model->$attribute;
-        if(!is_array($authors)) {
+        if(!is_array($authors) || !count($authors)) {
             $model->addError($attribute, Yii::t('books', 'The author not chosen'));
         }
 
