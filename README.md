@@ -11,6 +11,5 @@
 Отчет - ТОП 10 авторов выпуствиших больше книг за какой-то год.
 ### тесты
 ```bash
-./vendor/bin/codecept run -c frontend functional BookCest
-./vendor/bin/codecept run -c frontend unit books
+./vendor/bin/codecept run -c modules/books
 ```
