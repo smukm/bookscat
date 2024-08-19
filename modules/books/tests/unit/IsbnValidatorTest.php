@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\tests\unit\books;
+namespace modules\books\tests\unit;
 
 use modules\books\forms\BookForm;
 

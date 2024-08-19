@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\tests\functional;
+namespace modules\books\tests\functional;
 
 use common\fixtures\UserFixture;
 use frontend\tests\FunctionalTester;
@@ -16,23 +16,23 @@ class BookCest
         return [
             'user' => [
                 'class' => UserFixture::class,
-                'dataFile' => codecept_data_dir() . 'login_data.php',
+                'dataFile' => '@frontend/tests/_data/login_data.php',
             ],
             'author' => [
                 'class' => AuthorFixture::class,
-                'dataFile' => '@modules/books/fixtures/data/author.php'
+                'dataFile' => '@modules/books/tests/fixtures/data/author.php'
             ],
             'book' => [
                 'class' => BookFixture::class,
-                'dataFile' => '@modules/books/fixtures/data/book.php'
+                'dataFile' => '@modules/books/tests/fixtures/data/book.php'
             ],
             'author_book' => [
                 'class' => AuthorBookFixture::class,
-                'dataFile' => '@modules/books/fixtures/data/author_book.php'
+                'dataFile' => '@modules/books/tests/fixtures/data/author_book.php'
             ],
             'subscriber' => [
                 'class' => SubscriberFixture::class,
-                'dataFile' => '@modules/books/fixtures/data/subscriber.php'
+                'dataFile' => '@modules/books/tests/fixtures/data/subscriber.php'
             ],
         ];
     }
