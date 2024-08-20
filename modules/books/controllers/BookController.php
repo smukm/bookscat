@@ -79,12 +79,6 @@ class BookController extends Controller
 
     public function actionIndex(): string
     {
-
-
-        $g = printFileSize(32);
-        //$g = ini_get_size('32M');
-        dd($g);
-
         $searchModel = new BookSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
