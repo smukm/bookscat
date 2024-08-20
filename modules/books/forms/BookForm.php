@@ -54,9 +54,9 @@ class BookForm extends Model
                 'file',
                 'extensions' => ['png', 'jpg', 'jpeg', 'gif',],
                 'skipOnEmpty' => true,
-                'maxSize'=> ini_get_size('upload_max_filesize'),
-                'tooBig'=>'File has to be smaller than ' . print_file_size(
-                    ini_get_size('upload_max_filesize')
+                'maxSize'=> iniGetSize('upload_max_filesize'),
+                'tooBig'=>'File has to be smaller than ' . printFileSize(
+                    iniGetSize('upload_max_filesize')
                 )
             ],
             [['isbn'], 'trim'],

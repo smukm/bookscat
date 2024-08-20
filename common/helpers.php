@@ -1,40 +1,47 @@
 <?php
-if(!function_exists('ini_get_size')) {
-    function ini_get_size(string $name): int
+
+declare(strict_types=1);
+
+if(!function_exists('iniGetSize')) {
+    function iniGetSize(string $name): int
     {
-        $size = ini_get($name);
-        $unit = substr($size, -1);
-        $iSize = (int) substr($size, 0, -1);
+        $size = ini_get($name) ?: '0';
 
-        switch (strtoupper($unit))
-        {
-            case 'Y' : $iSize *= 1024; // Yotta
-            case 'Z' : $iSize *= 1024; // Zetta
-            case 'E' : $iSize *= 1024; // Exa
-            case 'P' : $iSize *= 1024; // Peta
-            case 'T' : $iSize *= 1024; // Tera
-            case 'G' : $iSize *= 1024; // Giga
-            case 'M' : $iSize *= 1024; // Mega
-            case 'K' : $iSize *= 1024; // kilo
-        }
-
-        return $iSize;
+        return convertToBytes($size);
     }
 }
 
-if(!function_exists('print_file_size')) {
-    function print_file_size(int $file_size): string
+if(!function_exists('convertToBytes')) {
+    function convertToBytes(string $from): ?int
     {
-        if ($file_size >= 1073741824) {
-            $file_size = (round($file_size / 1073741824 * 100) / 100) . " Гб.";
-        } elseif ($file_size >= 1048576) {
-            $file_size = (round($file_size / 1048576 * 100) / 100) . " Мб.";
-        } elseif ($file_size >= 1024) {
-            $file_size = (round($file_size / 1024 * 100) / 100) . " Кб.";
-        } else {
-            $file_size .= " Байт";
+        $suffixes = ['B', 'K', 'M', 'G', 'T', 'P'];
+        $number = substr($from, 0, -1);
+        $suffix = strtoupper(substr($from, -1));
+
+        if (is_numeric($suffix)) {
+            return (int)preg_replace('/\D/', '', $from);
         }
 
-        return $file_size;
+        $exponent = array_search($suffix, $suffixes);
+
+        if ($exponent === false) {
+            return null;
+        }
+
+        return $number * (1024 ** $exponent);
+    }
+}
+
+if(!function_exists('printFileSize')) {
+    function printFileSize(int $file_size): string
+    {
+        return match (true) {
+            ($file_size >= 1125899906842624) => (round($file_size / 1125899906842624 * 100) / 100) . ' Пб.',
+            ($file_size >= 1099511627776) => (round($file_size / 1099511627776 * 100) / 100) . ' Тб.',
+            ($file_size >= 1073741824) => (round($file_size / 1073741824 * 100) / 100) . ' Гб.',
+            ($file_size >= 1048576) => (round($file_size / 1048576 * 100) / 100) . ' Мб.',
+            ($file_size >= 1024) => (round($file_size / 1024 * 100) / 100) . ' Кб.',
+            ($file_size < 1024) => $file_size .= ' Байт'
+        };
     }
 }
