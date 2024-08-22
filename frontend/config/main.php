@@ -53,8 +53,10 @@ return [
     ],
     'params' => $params,
     'modules' => [
-        'books' => BooksModule::class,
-        'controllerNamespace' => 'modules\books\controllers',
-        'viewPath' => '@modules/books/views',
+        'books' => [
+            'class' => BooksModule::class,
+            'controllerNamespace' => 'modules\books\controllers',
+            'viewPath' => '@modules/books/views',
+        ]
     ]
 ];
