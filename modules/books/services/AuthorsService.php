@@ -9,6 +9,8 @@ use modules\books\entities\Author;
 use modules\books\entities\Book;
 use modules\books\forms\AuthorForm;
 use Throwable;
+use Yii;
+use yii\caching\TagDependency;
 use yii\db\Exception;
 use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
@@ -77,7 +79,16 @@ class AuthorsService
      */
     public function findAuthor(int $id): Author
     {
-        if (($model = Author::findOne(['id' => $id])) !== null) {
+        if (($model = Author::find()
+                ->cache(Yii::$app->params['cacheDuration'], new TagDependency([
+                    'tags' => [
+                        Author::tableName(),
+                        $id
+                    ]
+                ]))
+                ->where(['id' => $id])
+                ->one()) !== null) {
+
             return $model;
         }
 

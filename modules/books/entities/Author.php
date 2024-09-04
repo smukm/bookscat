@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace modules\books\entities;
 
+use modules\books\behaviors\CacheInvalidateBehavior;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -47,6 +48,26 @@ class Author extends ActiveRecord
             'firstname' => Yii::t('books', 'Firstname'),
             'middlename' => Yii::t('books', 'Middlename'),
             'lastname' => Yii::t('books', 'Lastname'),
+        ];
+    }
+
+    public function behaviors(): array
+    {
+        return [
+            'invalidateCache' => [
+                'class' => CacheInvalidateBehavior::class,
+                'tags' => [
+                    [
+                        self::tableName(),
+                        function ($model) {
+                            return $model->id;
+                        }
+                    ],
+                    [
+                        self::tableName()
+                    ]
+                ],
+            ]
         ];
     }
 

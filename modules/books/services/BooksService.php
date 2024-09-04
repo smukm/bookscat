@@ -7,12 +7,12 @@ namespace modules\books\services;
 
 use DomainException;
 use modules\books\entities\Author;
-use modules\books\entities\AuthorBook;
 use modules\books\entities\Book;
 use modules\books\events\BookAddedEvent;
 use modules\books\forms\BookForm;
 use Throwable;
 use Yii;
+use yii\caching\TagDependency;
 use yii\db\ActiveRecord;
 use yii\db\Exception;
 use yii\db\StaleObjectException;
@@ -100,7 +100,7 @@ class BooksService
             }
 
             $book->populateRelation('authors', $authors);
-            $transaction->commit();;
+            $transaction->commit();
 
         } catch (Throwable $ex) {
             $transaction->rollBack();
@@ -137,6 +137,10 @@ class BooksService
     public function findBook(int $id): array|ActiveRecord|null|Book
     {
         if (($model = Book::find()
+                ->cache(Yii::$app->params['cacheDuration'], new TagDependency([
+                    'tags' => [Book::tableName(),
+                    $id]
+                ]))
                 ->with('authors')
                 ->where(['id' => $id])
                 ->one()) !== null) {

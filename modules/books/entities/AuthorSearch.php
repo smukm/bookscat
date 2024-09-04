@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace modules\books\entities;
 
+use Yii;
 use yii\base\Model;
+use yii\caching\TagDependency;
 use yii\data\ActiveDataProvider;
 
 
@@ -25,7 +27,9 @@ class AuthorSearch extends Author
 
     public function search($params): ActiveDataProvider
     {
-        $query = Author::find();
+        $query = Author::find()->cache(Yii::$app->params['cacheDuration'], new TagDependency([
+            'tags' => [Author::tableName()]
+        ]));
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

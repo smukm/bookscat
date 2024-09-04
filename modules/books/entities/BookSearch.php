@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace modules\books\entities;
 
+use Yii;
 use yii\base\Model;
+use yii\caching\TagDependency;
 use yii\data\ActiveDataProvider;
 
 class BookSearch extends Book
@@ -27,7 +29,12 @@ class BookSearch extends Book
 
     public function search($params): ActiveDataProvider
     {
-        $query = Book::find()->with('authors');
+        $query = Book::find()
+            ->cache(Yii::$app->params['cacheDuration'], new TagDependency([
+                'tags' => [Book::tableName()]
+            ]))
+            ->with('authors')
+        ;
 
         // add conditions that should always apply here
 

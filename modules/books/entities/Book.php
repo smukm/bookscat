@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace modules\books\entities;
 
+use modules\books\behaviors\CacheInvalidateBehavior;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\caching\TagDependency;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
@@ -53,6 +55,26 @@ class Book extends ActiveRecord
             'release_year' => Yii::t('books','Release Year'),
             'isbn' => Yii::t('books','ISBN'),
             'photo' => Yii::t('books','Photo'),
+        ];
+    }
+
+    public function behaviors(): array
+    {
+        return [
+            'invalidateCache' => [
+                'class' => CacheInvalidateBehavior::class,
+                'tags' => [
+                    [
+                        self::tableName(),
+                        function ($model) {
+                            return $model->id;
+                        }
+                    ],
+                    [
+                        self::tableName()
+                    ]
+                ],
+            ]
         ];
     }
 
